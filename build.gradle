@@ -30,6 +30,7 @@ dependencies {
 	implementation group: 'com.fasterxml.jackson.dataformat', name: 'jackson-dataformat-xml', version: '2.12.3'
 
 	implementation group: 'org.springdoc', name: 'springdoc-openapi-ui', version: '1.5.9'
+
 	implementation group: 'io.springfox', name: 'springfox-bean-validators', version: '3.0.0'
 
 	implementation group: 'org.hibernate', name: 'hibernate-core', version: '5.5.3.Final'
