@@ -8,6 +8,7 @@ import one.digitalinnovation.live.model.entity.Workload;
 
 import java.util.List;
 
+
 @Mapper
 public interface WorkloadMapper {
 

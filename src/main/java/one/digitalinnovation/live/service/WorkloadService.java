@@ -24,7 +24,7 @@ import java.util.Optional;
 public class WorkloadService {
 
     @Autowired
-    private final WorkloadRepository workloadRepository;
+    private WorkloadRepository workloadRepository;
     private final WorkloadMapper workloadMapper = WorkloadMapper.INSTANCE;
 
     @Transactional
