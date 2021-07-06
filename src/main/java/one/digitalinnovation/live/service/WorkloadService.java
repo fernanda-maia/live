@@ -29,12 +29,7 @@ public class WorkloadService {
 
     @Transactional
     public WorkloadDTO save(WorkloadDTO workloadDTO) {
-        Optional<Workload> optionalWorkload = workloadRepository
-                .findByDescription(workloadDTO.getDescription());
-
-        if(optionalWorkload.isPresent()) {
-            throw new BusinessException(MessageUtils.WORKLOAD_ALREADY_REGISTERED);
-        }
+        verifyIfAlreadyRegistered(workloadDTO.getDescription());
 
         Workload workloadToSave = workloadMapper.toModel(workloadDTO);
         Workload savedWorkload = workloadRepository.save(workloadToSave);
@@ -50,32 +45,48 @@ public class WorkloadService {
 
     @Transactional(readOnly = true)
     public WorkloadDTO findById(Long id) throws NotFoundException {
-        Optional<Workload> foundWorkload = this.workloadRepository.findById(id);
+        Workload foundWorkload = verifyIfExists(id);
 
-        if(foundWorkload.isEmpty()) {
-            throw new NotFoundException(MessageUtils.WORKLOAD_NOT_FOUND);
-        }
-
-        return workloadMapper.toDTO(foundWorkload.get());
+        return workloadMapper.toDTO(foundWorkload);
     }
 
     @Transactional
-    public WorkloadDTO delete(Long id) throws NotFoundException {
-        WorkloadDTO deletedWorkload = this.findById(id);
-        workloadRepository.deleteById(id);
+    public WorkloadDTO delete(Long id) {
+        WorkloadDTO deletedWorkload = findById(id);
+        workloadRepository.deleteById(deletedWorkload.getId());
 
         return deletedWorkload;
     }
 
     @Transactional
-    public WorkloadDTO update(WorkloadDTO workloadDTO, Long id)
-            throws NotFoundException {
+    public WorkloadDTO update(WorkloadDTO workloadDTO, Long id) {
 
-        this.findById(id);
+        verifyIfExists(id);
+        verifyIfAlreadyRegistered(workloadDTO.getDescription());
 
         Workload workloadToBeSaved = workloadMapper.toModel(workloadDTO);
         Workload savedWorkload= workloadRepository.save(workloadToBeSaved);
 
         return workloadMapper.toDTO(savedWorkload);
+    }
+
+
+    private Workload verifyIfExists(Long id) {
+        Optional<Workload> foundWorkload = workloadRepository.findById(id);
+
+        if(foundWorkload.isEmpty()) {
+            throw new NotFoundException(MessageUtils.WORKLOAD_NOT_FOUND);
+        }
+
+        return foundWorkload.get();
+    }
+
+    private void verifyIfAlreadyRegistered(String description) {
+        Optional<Workload> optionalWorkload = workloadRepository
+                .findByDescription(description);
+
+        if(optionalWorkload.isPresent()) {
+            throw new BusinessException(MessageUtils.WORKLOAD_ALREADY_REGISTERED);
+        }
     }
 }
