@@ -4,16 +4,6 @@ plugins {
 	id 'java'
 }
 
-task stage(dependsOn: ['build', 'clean'])
-build.mustRunAfter clean 
-
-task copyToLib(type: Copy) {
-    into "$buildDir/libs"
-    from(configurations.compile)
-}
-
-stage.dependsOn(copyToLib)
-
 ext {
 	mapstructVersion = "1.4.2.Final"
 }
