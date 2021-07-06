@@ -4,6 +4,16 @@ plugins {
 	id 'java'
 }
 
+task stage(dependsOn: ['build', 'clean'])
+build.mustRunAfter clean
+
+gradle.taskGraph.whenReady {
+  taskGraph ->
+    if (taskGraph.hasTask(stage)) {
+      test.enabled = false
+    }
+}
+
 ext {
 	mapstructVersion = "1.4.2.Final"
 }
