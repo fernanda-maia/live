@@ -2,7 +2,6 @@ package one.digitalinnovation.live.controller;
 
 import one.digitalinnovation.live.model.dto.WorkloadDTO;
 import one.digitalinnovation.live.service.WorkloadService;
-import one.digitalinnovation.live.exception.NotFoundException;
 
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
