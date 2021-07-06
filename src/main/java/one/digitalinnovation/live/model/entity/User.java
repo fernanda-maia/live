@@ -1,4 +1,4 @@
-package one.digitalinnovation.live.model;
+package one.digitalinnovation.live.model.entity;
 
 import lombok.Data;
 import lombok.Builder;
@@ -44,6 +44,6 @@ public class User {
     private AccessLevel accessLevel;
 
     @ManyToOne
-    private  Workload workload;
+    private Workload workload;
 
 }

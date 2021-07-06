@@ -1,43 +1,42 @@
-package one.digitalinnovation.live.model;
+package one.digitalinnovation.live.model.dto;
 
 import lombok.Data;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 
-import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+
+import org.hibernate.validator.constraints.br.CNPJ;
 
 
 @Data
-@Entity
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Company {
+public class CompanyDTO {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
     private String description;
 
-    @Column(nullable = false, unique = true)
+    @CNPJ
+    @NotEmpty
     private String cnpj;
 
-    @Column(nullable = false)
+    @NotEmpty
     private String address;
 
-    @Column(nullable = false)
+    @NotEmpty
     private String district;
 
-    @Column(nullable = false)
+    @NotEmpty
     private String city;
 
-    @Column(nullable = false)
+    @NotEmpty
     private String state;
 
-    @Column(nullable = false)
+    @NotBlank
     private String telephone;
-
 }

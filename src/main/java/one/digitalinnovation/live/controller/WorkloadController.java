@@ -1,9 +1,10 @@
 package one.digitalinnovation.live.controller;
 
-import one.digitalinnovation.live.exception.WorkloadNotFound;
-import one.digitalinnovation.live.model.Workload;
+import one.digitalinnovation.live.model.dto.WorkloadDTO;
 import one.digitalinnovation.live.service.WorkloadService;
+import one.digitalinnovation.live.exception.NotFoundException;
 
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -21,34 +22,39 @@ public class WorkloadController {
     @Autowired
     private WorkloadService workloadService;
 
-    @PostMapping
-    public Workload createWorkload(@RequestBody @Valid Workload workload) {
-        return workloadService.save(workload);
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public WorkloadDTO createWorkload(@RequestBody @Valid WorkloadDTO workloadDTO) {
+        return workloadService.save(workloadDTO);
     }
 
-    @GetMapping
-    public List<Workload> listAll() {
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<WorkloadDTO> listAll() {
         return  workloadService.listAll();
     }
 
-    @GetMapping(path = "/{id}")
-    public Workload findById(@PathVariable Long id)
-            throws WorkloadNotFound {
+    @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public WorkloadDTO findById(@PathVariable Long id)
+            throws NotFoundException {
 
         return workloadService.findById(id);
     }
 
-    @PutMapping(path = "/{id}")
-    public Workload updateWorkload(@RequestBody @Valid Workload workload,
+    @PutMapping(path = "/{id}",
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            consumes = MediaType.APPLICATION_JSON_VALUE)
+    public WorkloadDTO updateWorkload(@RequestBody @Valid WorkloadDTO workloadDTO,
                                    @PathVariable Long id)
-            throws WorkloadNotFound {
+            throws NotFoundException {
 
-        return workloadService.update(workload, id);
+        return workloadService.update(workloadDTO, id);
     }
 
-    @DeleteMapping(path = "/{id}")
-    public Workload  deleteById(@PathVariable Long id)
-            throws WorkloadNotFound {
+    @DeleteMapping(path = "/{id}",
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            consumes = MediaType.APPLICATION_JSON_VALUE)
+    public WorkloadDTO  deleteById(@PathVariable Long id)
+            throws NotFoundException {
 
         return workloadService.delete(id);
     }

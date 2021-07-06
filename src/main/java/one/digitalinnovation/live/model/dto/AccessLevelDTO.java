@@ -1,25 +1,21 @@
-package one.digitalinnovation.live.model;
+package one.digitalinnovation.live.model.dto;
 
 import lombok.Data;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 
-import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 
 
 @Data
-@Entity
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class AccessLevel {
+public class AccessLevelDTO {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @NotEmpty
     private String description;
-
 }

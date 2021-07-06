@@ -1,4 +1,4 @@
-package one.digitalinnovation.live.model;
+package one.digitalinnovation.live.model.entity;
 
 import lombok.Data;
 import lombok.Builder;
@@ -7,27 +7,19 @@ import lombok.AllArgsConstructor;
 
 import javax.persistence.*;
 
-import java.time.LocalDateTime;
-
 
 @Data
 @Entity
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
-public class WorkCalendar {
+@NoArgsConstructor
+public class UserType {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    private DataType dataType;
-
     @Column(nullable = false)
     private String description;
-
-    @Column(nullable = false)
-    private LocalDateTime specialDate;
 
 }

@@ -1,4 +1,4 @@
-package one.digitalinnovation.live.model;
+package one.digitalinnovation.live.model.entity;
 
 import lombok.Data;
 import lombok.Builder;
@@ -11,9 +11,9 @@ import javax.persistence.*;
 @Data
 @Entity
 @Builder
-@AllArgsConstructor
 @NoArgsConstructor
-public class Workload {
+@AllArgsConstructor
+public class AccessLevel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

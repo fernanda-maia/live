@@ -1,12 +1,19 @@
 package one.digitalinnovation.live.service;
 
 import lombok.AllArgsConstructor;
-import one.digitalinnovation.live.exception.WorkloadNotFound;
-import one.digitalinnovation.live.model.Workload;
+
+import one.digitalinnovation.live.util.MessageUtils;
+import one.digitalinnovation.live.mapper.WorkloadMapper;
+import one.digitalinnovation.live.model.entity.Workload;
+import one.digitalinnovation.live.model.dto.WorkloadDTO;
+import one.digitalinnovation.live.repository.WorkloadRepository;
+
+import one.digitalinnovation.live.exception.BusinessException;
+import one.digitalinnovation.live.exception.NotFoundException;
+
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import one.digitalinnovation.live.repository.WorkloadRepository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,37 +24,58 @@ import java.util.Optional;
 public class WorkloadService {
 
     @Autowired
-    private WorkloadRepository workloadRepository;
+    private final WorkloadRepository workloadRepository;
+    private final WorkloadMapper workloadMapper = WorkloadMapper.INSTANCE;
 
-    public Workload save(Workload workload) {
-        return workloadRepository.save(workload);
+    @Transactional
+    public WorkloadDTO save(WorkloadDTO workloadDTO) {
+        Optional<Workload> optionalWorkload = workloadRepository
+                .findByDescription(workloadDTO.getDescription());
+
+        if(optionalWorkload.isPresent()) {
+            throw new BusinessException(MessageUtils.WORKLOAD_ALREADY_REGISTERED);
+        }
+
+        Workload workloadToSave = workloadMapper.toModel(workloadDTO);
+        Workload savedWorkload = workloadRepository.save(workloadToSave);
+
+        return workloadMapper.toDTO(savedWorkload);
     }
 
-    public List<Workload> listAll() {
-        return workloadRepository.findAll();
+    @Transactional(readOnly = true)
+    public List<WorkloadDTO> listAll() {
+        return workloadMapper
+                .toDTO(workloadRepository.findAll());
     }
 
-    public Workload findById(Long id) throws WorkloadNotFound {
+    @Transactional(readOnly = true)
+    public WorkloadDTO findById(Long id) throws NotFoundException {
         Optional<Workload> foundWorkload = this.workloadRepository.findById(id);
 
         if(foundWorkload.isEmpty()) {
-            throw new WorkloadNotFound(id);
+            throw new NotFoundException(MessageUtils.WORKLOAD_NOT_FOUND);
         }
 
-        return foundWorkload.get();
+        return workloadMapper.toDTO(foundWorkload.get());
     }
 
-    public Workload delete(Long id) throws WorkloadNotFound {
-        Workload deletedWorkload = findById(id);
+    @Transactional
+    public WorkloadDTO delete(Long id) throws NotFoundException {
+        WorkloadDTO deletedWorkload = this.findById(id);
         workloadRepository.deleteById(id);
 
         return deletedWorkload;
     }
 
-    public Workload update(Workload workload, Long id)
-            throws WorkloadNotFound {
+    @Transactional
+    public WorkloadDTO update(WorkloadDTO workloadDTO, Long id)
+            throws NotFoundException {
 
-        findById(id);
-        return workloadRepository.save(workload);
+        this.findById(id);
+
+        Workload workloadToBeSaved = workloadMapper.toModel(workloadDTO);
+        Workload savedWorkload= workloadRepository.save(workloadToBeSaved);
+
+        return workloadMapper.toDTO(savedWorkload);
     }
 }

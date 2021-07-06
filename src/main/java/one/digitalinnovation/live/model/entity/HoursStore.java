@@ -1,4 +1,4 @@
-package one.digitalinnovation.live.model;
+package one.digitalinnovation.live.model.entity;
 
 import lombok.*;
 
