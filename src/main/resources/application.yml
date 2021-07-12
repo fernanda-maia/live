@@ -11,7 +11,7 @@ spring:
       path: /h2
 
   datasource:
-    url:  jdbc:h2:mem:testdb
+    url: jdbc:h2:mem:testdb
     driverClassName: org.h2.Driver
     username: sa
     password:
