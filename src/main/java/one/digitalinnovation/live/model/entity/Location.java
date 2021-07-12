@@ -11,7 +11,6 @@ import javax.persistence.*;
 
 @Data
 @Entity
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class Location {

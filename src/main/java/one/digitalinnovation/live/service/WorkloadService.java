@@ -25,6 +25,7 @@ public class WorkloadService {
 
     @Autowired
     private WorkloadRepository workloadRepository;
+
     private final WorkloadMapper workloadMapper = WorkloadMapper.INSTANCE;
 
     @Transactional

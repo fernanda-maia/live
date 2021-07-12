@@ -11,7 +11,6 @@ import java.time.LocalDateTime;
 
 @Data
 @Entity
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class Movement {

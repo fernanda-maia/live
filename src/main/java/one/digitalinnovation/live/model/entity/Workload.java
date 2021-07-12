@@ -10,7 +10,6 @@ import javax.persistence.*;
 
 @Data
 @Entity
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class Workload {
